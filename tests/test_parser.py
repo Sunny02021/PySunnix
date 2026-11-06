@@ -13,6 +13,6 @@ lexer = Lexer(code)
 tokens = lexer.tokenize()
 parser = Parser(tokens)
 
-print(f"Current Token: {parser.current_token()}")
+print(f"Current Token: {parser.current_token().type}({parser.current_token().value})")
 parser.advance()
-print(f"After advance(): {parser.current_token()}")
+print(f"After advance(): {parser.current_token().type}({parser.current_token().value})")
