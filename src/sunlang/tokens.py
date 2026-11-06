@@ -54,7 +54,7 @@ class TokenType(Enum):
     # controle
     EOF = auto() # end of file
 
-@datatype
+@dataclass
 class Token:
     type: TokenType # categoris do token
     value: object # conteudo encontrado
