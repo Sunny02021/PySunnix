@@ -96,7 +96,7 @@ class Lexer:
             if char.isdigit():
                 self.advance()
             elif char == "." and not has_decimal:
-                if self.peek() is not None and self.peek.isdigit():
+                if self.peek() is not None and self.peek().isdigit():
                     has_decimal = True
                     self.advance()
                 else:
@@ -171,7 +171,7 @@ class Lexer:
             else:
                 value += self.advance()
 
-            raise LexerError("Unfinished string")
+        raise LexerError("Unfinished string")
 
     def tokenize(self):
         """divides the source code into a sequence of tokens"""
@@ -184,7 +184,7 @@ class Lexer:
                 continue
 
             if char == "/" and self.peek() == "/":
-                self.skip_comments()
+                self.skip_comment()
                 continue
 
             if char.isdigit():
@@ -210,7 +210,7 @@ class Lexer:
                 "(": TokenType.LEFT_PAREN,
                 ")": TokenType.RIGHT_PAREN,
                 "{": TokenType.LEFT_BRACE,
-                "}": TokenType.RIGHT_BRAVE
+                "}": TokenType.RIGHT_BRACE
             }
 
             if char in operators:
@@ -242,7 +242,7 @@ class Lexer:
 
             if char in single_operators:
                 self.advance()
-                self.add_token(double_operators[char], char)
+                self.add_token(single_operators[char], char)
                 continue
 
             raise LexerError(
@@ -250,8 +250,8 @@ class Lexer:
                 f"on line {self.line}, column {self.column}"
             )
 
-            self.tokens.append(
+        self.tokens.append(
                 Token(TokenType.EOF, None, self.line, self.column)
             )
 
-            return self.token
+        return self.tokens
