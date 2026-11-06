@@ -204,14 +204,31 @@ class Lexer:
                 "-": TokenType.MINUS,
                 "*": TokenType.MULTIPLY,
                 "/": TokenType.DIVIDE,
+                "%": TokenType.MODULO,
                 ";": TokenType.SEMICOLON,
                 ",": TokenType.COMMA,
                 ".": TokenType.DOT,
                 "(": TokenType.LEFT_PAREN,
                 ")": TokenType.RIGHT_PAREN,
                 "{": TokenType.LEFT_BRACE,
-                "}": TokenType.RIGHT_BRACE
+                "}": TokenType.RIGHT_BRACE,
+                "!": TokenType.NOT
             }
+
+            # This helps the lexer to avoid separating the '!'
+            # and the '=' from the '!='
+            if char == '!':
+                if self.peek() == '=':
+                    value = char + self.peek()
+                    self.advance()
+                    self.advance()
+                    self.add_token(TokenType.NOT_EQUAL, value)
+                    continue
+                else:
+                    self.advance()
+                    self.add_token(operators[char], char)
+                    continue
+                continue
 
             if char in operators:
                 self.advance()
@@ -223,6 +240,10 @@ class Lexer:
                 "!=": TokenType.NOT_EQUAL,
                 ">=": TokenType.GREATER_EQUAL,
                 "<=": TokenType.LESS_EQUAL,
+                "+=": TokenType.PLUS_EQUAL,
+                "-=": TokenType.MINUS_EQUAL,
+                "&&": TokenType.AND,
+                "||": TokenType.OR,
             }
 
             pair = char + (self.peek() or "")
@@ -230,7 +251,7 @@ class Lexer:
             if pair in double_operators:
                 self.advance()
                 self.advance()
-                self.add_token(double_operators[pair], char)
+                self.add_token(double_operators[pair], pair)
                 continue
 
             single_operators = {
