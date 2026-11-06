@@ -30,6 +30,11 @@ class TokenType(Enum):
     MINUS = auto() # -
     MULTIPLY = auto() # *
     DIVIDE = auto() # /
+    MODULO = auto() # %
+
+    AND = auto() # &&
+    OR = auto() # ||
+    NOT = auto() # !
 
     EQUAL = auto() # =
     EQUAL_EQUAL = auto() # ==
@@ -39,6 +44,9 @@ class TokenType(Enum):
     LESS = auto() # <
     GREATER_EQUAL = auto() # >=
     LESS_EQUAL = auto() # <=
+
+    PLUS_EQUAL = auto() # +=
+    MINUS_EQUAL = auto() # -=
 
     # simbolos
     SEMICOLON = auto() # ;
