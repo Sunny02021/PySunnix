@@ -30,7 +30,21 @@ int res = 10 + 20 * 3
 print(res)
 """
 
-lexer = Lexer(code3)
+code4 = """
+int a = 6
+
+true || false
+true && false
+a >= 6
+a > 5
+a < 7
+a <= 6
+a += 1
+a -= 1
+a != 6
+"""
+
+lexer = Lexer(code4)
 tokens = lexer.tokenize()
 
 for token in tokens:
@@ -38,5 +52,5 @@ for token in tokens:
         f"{token.type.name:<15} "
         f"{str(token.value):<10} "
         f"Linha: {token.line:<5}"
-        f"Coluna: {token.column}"
+        #f"Coluna: {token.column}"
     )
