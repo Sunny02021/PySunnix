@@ -21,10 +21,16 @@ int num2 = 10;
 
 int sum = num1 + num2;
 
-print("Soma: " + sum);
+print(sum);
 """
 
-lexer = Lexer(code2)
+code3 = """
+int res = 10 + 20 * 3
+
+print(res)
+"""
+
+lexer = Lexer(code3)
 tokens = lexer.tokenize()
 
 for token in tokens:
