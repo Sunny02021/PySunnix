@@ -25,3 +25,18 @@ class Parser:
         self.position += 1
 
         return token
+
+    def expect(self, token_type):
+        """
+        Checks the current token and returns it if the type
+        matches the passed token_type.
+        """
+        token = self.current_token()
+
+        if token.type == token_type:
+            self.advance()
+            return token
+
+        raise ParserError(
+            f"Expected {token_type.name}, got {token.type.name} ({token.value})"
+        )
