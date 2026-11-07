@@ -14,9 +14,10 @@ from ast_nodes import NumberLiteral
 # code = "(10 + )"
 #code = "int age = 20;"
 code = """
-int age = 20;
+int age = 17;
+age = 18;
+age = 20 + 5;
 float height = 1.75;
-int result = 10 + 20 * 3;
 """
 
 lexer = Lexer(code)
