@@ -83,7 +83,6 @@ class Parser:
         while token.type in (TokenType.PLUS, TokenType.MINUS):
             self.advance()
             operator = token
-            print("Operator:", operator)
             right = self.parse_factor()
             left = BinaryExpression(left, operator, right)
             token = self.current_token()
