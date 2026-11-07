@@ -6,9 +6,9 @@ from lexer import Lexer
 from parser import Parser
 from ast_nodes import NumberLiteral
 
-code = "10 + 20 + 30"
+#code = "10 + 20 + 30"
 # code = "10 * 20 / 5"
-# code = "(10 + 20) * (3 + 4)"
+code = "(10 + 20) * (3 + 4)"
 # code = "((10 + 5) * 2) - 3"
 # code = "()"
 # code = "(10 + )"
