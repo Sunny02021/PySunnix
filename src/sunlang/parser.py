@@ -109,3 +109,17 @@ class Parser:
             statements.append(self.parse_variable_declaration())
         
         return Program(statements)
+
+    def parse_assignment(self):
+        """recognises expressions that assign a value to an
+        existing variable, such as:
+
+        int age = 17;
+        age = 18;"""
+
+        self.expect(TokenType.IDENTIFIER)
+        self.expect(TokenType.EQUAL)
+        value = self.parse_expression()
+        self.expect(TokenType.SEMICOLON)
+        
+        return Assignment(name, value)
