@@ -26,3 +26,8 @@ class VariableDeclaration(Statement):
 @dataclass
 class Program:
     statements: list[Statement]
+
+@dataclass
+class Assignment(Statement):
+    name: Token
+    value: Expression
