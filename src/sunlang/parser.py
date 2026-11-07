@@ -1,5 +1,5 @@
 from tokens import Token, TokenType
-from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration
+from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement
 
 class ParserError(Exception):
     pass
@@ -98,3 +98,14 @@ class Parser:
         self.expect(TokenType.SEMICOLON)
         
         return VariableDeclaration(var_type, name, initializer)
+
+    def parse_program(self):
+        """iterates through the tokens until curr token == EOF,
+        calling the appropriate methods for each instruction"""
+        
+        statements: list[Statement] = []
+
+        while self.current_token().type != TokenType.EOF:
+            statements.append(self.parse_variable_declaration())
+        
+        return Program(statements)
