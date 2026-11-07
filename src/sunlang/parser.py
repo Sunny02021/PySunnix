@@ -1,5 +1,5 @@
 from tokens import Token, TokenType
-from ast_nodes import NumberLiteral, BinaryExpression
+from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration
 
 class ParserError(Exception):
     pass
@@ -88,3 +88,13 @@ class Parser:
             token = self.current_token()
 
         return left
+
+    def parse_variable_declaration(self):
+        var_type = self.current_token()
+        self.advance()
+        name = self.expect(TokenType.IDENTIFIER)
+        self.expect(TokenType.EQUAL) # =
+        initializer = self.parse_expression()
+        self.expect(TokenType.SEMICOLON)
+        
+        return VariableDeclaration(var_type, name, initializer)
