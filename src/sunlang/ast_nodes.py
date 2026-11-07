@@ -22,3 +22,7 @@ class VariableDeclaration(Statement):
     var_type: Token
     name: Token
     initializer: Expression
+
+@dataclass
+class Program:
+    statements: list[Statement]
