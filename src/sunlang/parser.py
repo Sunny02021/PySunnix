@@ -1,5 +1,5 @@
 from tokens import Token, TokenType
-from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement
+from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment
 
 class ParserError(Exception):
     pass
@@ -105,9 +105,22 @@ class Parser:
         
         statements: list[Statement] = []
 
-        while self.current_token().type != TokenType.EOF:
-            statements.append(self.parse_variable_declaration())
-        
+        token = self.current_token()
+        while token.type != TokenType.EOF:
+            if token.type in (TokenType.INT, TokenType.FLOAT):
+                statements.append(self.parse_variable_declaration())
+
+            elif token.type == TokenType.IDENTIFIER:
+                statements.append(self.parse_assignment())
+
+            else:
+                raise ParserError(
+                    f"Unexpected token '{token.value}' of type {token.type.name} whilst attempting to read a statement."
+                    f"line {token.line}, column {token.column}"
+                )
+
+            token = self.current_token()
+
         return Program(statements)
 
     def parse_assignment(self):
@@ -117,7 +130,7 @@ class Parser:
         int age = 17;
         age = 18;"""
 
-        self.expect(TokenType.IDENTIFIER)
+        name = self.expect(TokenType.IDENTIFIER)
         self.expect(TokenType.EQUAL)
         value = self.parse_expression()
         self.expect(TokenType.SEMICOLON)
