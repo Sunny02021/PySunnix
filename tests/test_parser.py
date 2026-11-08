@@ -6,9 +6,7 @@ from lexer import Lexer
 from parser import Parser
 
 code = """
-int a = true && false;
-int b = true && false && true;
-int c = 10 > 5 && 8 < 20;
+int a = true || false && true;
 """
 
 lexer = Lexer(code)
