@@ -6,7 +6,7 @@ from lexer import Lexer
 from parser import Parser
 
 code = """
-int a = true || false && true;
+{}
 """
 
 lexer = Lexer(code)
@@ -18,7 +18,8 @@ parser = Parser(tokens)
 #node = parser.parse_factor()
 #node = parser.parse_expression()
 #node = parser.parse_variable_declaration()
-node = parser.parse_program()
+#node = parser.parse_program()
+node = parser.parse_block()
 
 print(node)
 print(type(node))
