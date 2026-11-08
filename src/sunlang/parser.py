@@ -1,5 +1,5 @@
 from tokens import Token, TokenType
-from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment
+from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment, UnaryExpression
 
 class ParserError(Exception):
     pass
@@ -62,15 +62,27 @@ class Parser:
             f"Expected a number literal, but found '{token.value}' "
             f"({token.type.name}) at line {token.line}, column {token.column}."
         )
+    
+    def parse_unary(self):
+        """recognises unary operators (-10, +10... etc)"""
+        token = self.current_token()
+
+        if token.type in (TokenType.MINUS, TokenType.PLUS):
+            op = token
+            self.advance()
+            operand = self.parse_unary()
+            return UnaryExpression(op, operand)
+
+        return self.parse_primary()
 
     def parse_factor(self):
-        left = self.parse_primary()
+        left = self.parse_unary()
 
         token = self.current_token()
         while token.type in (TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.MODULO):
             self.advance()
             operator = token
-            right = self.parse_primary()
+            right = self.parse_unary()
             left = BinaryExpression(left, operator, right)
             token = self.current_token()
 
