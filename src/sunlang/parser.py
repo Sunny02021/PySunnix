@@ -1,5 +1,5 @@
 from tokens import Token, TokenType
-from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment, UnaryExpression, BooleanLiteral
+from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment, UnaryExpression, BooleanLiteral, BlockStatement
 class ParserError(Exception):
     pass
 
@@ -161,7 +161,7 @@ class Parser:
             else:
                 raise ParserError(
                     f"Unexpected token '{token.value}' of type {token.type.name} whilst attempting to read a statement."
-                    f"line {token.line}, column {token.column}"
+                    f" line {token.line}, column {token.column}"
                 )
 
             token = self.current_token()
@@ -211,3 +211,29 @@ class Parser:
             token = self.current_token()
 
         return left
+
+    def parse_block(self):
+        """recognizes statements inside braces"""
+        self.expect(TokenType.LEFT_BRACE)
+
+        statements: list[Statement] = []
+        token = self.current_token()
+
+        while token.type not in (TokenType.RIGHT_BRACE, TokenType.EOF):
+            if token.type in (TokenType.INT, TokenType.FLOAT):
+                statements.append(self.parse_variable_declaration())
+
+            elif token.type == TokenType.IDENTIFIER:
+                statements.append(self.parse_assignment())
+
+            else:
+                raise ParserError(
+                    f"Unexpected token '{token.value}' of type {token.type.name} whilst attempting to read a statement."
+                    f" line {token.line}, column {token.column}"
+                )
+
+            token = self.current_token()
+
+        self.expect(TokenType.RIGHT_BRACE)
+
+        return BlockStatement(statements)
