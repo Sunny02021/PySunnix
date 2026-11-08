@@ -101,12 +101,36 @@ class Parser:
 
         return left
 
+    def parse_comparison(self):
+        """for expressions such as:
+        
+        int a = 10 + 5 > 12;
+        """
+        left = self.parse_expression()
+        
+        token = self.current_token()
+        while token.type in (
+            TokenType.EQUAL_EQUAL,
+            TokenType.NOT_EQUAL,
+            TokenType.GREATER,
+            TokenType.LESS,
+            TokenType.GREATER_EQUAL,
+            TokenType.LESS_EQUAL
+        ):
+            self.advance()
+            operator = token
+            right = self.parse_expression()
+            left = BinaryExpression(left, operator, right)
+            token = self.current_token()
+
+        return left
+
     def parse_variable_declaration(self):
         var_type = self.current_token()
         self.advance()
         name = self.expect(TokenType.IDENTIFIER)
         self.expect(TokenType.EQUAL) # =
-        initializer = self.parse_expression()
+        initializer = self.parse_comparison()
         self.expect(TokenType.SEMICOLON)
         
         return VariableDeclaration(var_type, name, initializer)
@@ -144,7 +168,7 @@ class Parser:
 
         name = self.expect(TokenType.IDENTIFIER)
         self.expect(TokenType.EQUAL)
-        value = self.parse_expression()
+        value = self.parse_comparison()
         self.expect(TokenType.SEMICOLON)
         
         return Assignment(name, value)
