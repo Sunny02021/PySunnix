@@ -139,7 +139,7 @@ class Parser:
         self.advance()
         name = self.expect(TokenType.IDENTIFIER)
         self.expect(TokenType.EQUAL) # =
-        initializer = self.parse_comparison()
+        initializer = self.parse_and()
         self.expect(TokenType.SEMICOLON)
         
         return VariableDeclaration(var_type, name, initializer)
@@ -177,7 +177,22 @@ class Parser:
 
         name = self.expect(TokenType.IDENTIFIER)
         self.expect(TokenType.EQUAL)
-        value = self.parse_comparison()
+        value = self.parse_and()
         self.expect(TokenType.SEMICOLON)
         
         return Assignment(name, value)
+
+    def parse_and(self):
+        """recognizes expressions with the and (&&) operator"""
+
+        left = self.parse_comparison()
+        
+        token = self.current_token()
+        while token.type == TokenType.AND:
+            op = token
+            self.advance()
+            right = self.parse_comparison()
+            left = BinaryExpression(left, op, right)
+            token = self.current_token()
+
+        return left
