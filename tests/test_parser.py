@@ -4,10 +4,11 @@ sys.path.insert(0, "src/sunlang")
 
 from lexer import Lexer
 from parser import Parser
-from ast_nodes import NumberLiteral
 
 code = """
-int f = 10 > 5 > 2;
+int a = true;
+int b = false;
+int c = 10 > 5;
 """
 
 lexer = Lexer(code)
