@@ -6,18 +6,13 @@ from lexer import Lexer
 from parser import Parser
 from ast_nodes import NumberLiteral
 
-# code = "10 + 20 + 30"
-# code = "10 * 20 / 5"
-# code = "(10 + 20) * (3 + 4)"
-# code = "((10 + 5) * 2) - 3"
-# code = "()"
-# code = "(10 + )"
-#code = "int age = 20;"
 code = """
-int age = 17;
-age = 18;
-age = 20 + 5;
-float height = 1.75;
+int a = -10;
+int b = +10;
+int c = --10;
+int d = -10 * 5;
+int e = 10 * -5;
+int f = -(10 + 5);
 """
 
 lexer = Lexer(code)
