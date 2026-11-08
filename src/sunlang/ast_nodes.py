@@ -33,10 +33,14 @@ class VariableDeclaration(Statement):
     initializer: Expression
 
 @dataclass
+class Assignment(Statement):
+    name: Token
+    value: Expression
+
+@dataclass
 class Program:
     statements: list[Statement]
 
 @dataclass
-class Assignment(Statement):
-    name: Token
-    value: Expression
+class BlockStatement(Statement):
+    statements: list[Statement]
