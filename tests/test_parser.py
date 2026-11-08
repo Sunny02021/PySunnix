@@ -7,12 +7,7 @@ from parser import Parser
 from ast_nodes import NumberLiteral
 
 code = """
-int a = -10;
-int b = +10;
-int c = --10;
-int d = -10 * 5;
-int e = 10 * -5;
-int f = -(10 + 5);
+int f = 10 > 5 > 2;
 """
 
 lexer = Lexer(code)
