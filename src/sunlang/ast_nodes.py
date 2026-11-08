@@ -10,6 +10,10 @@ class Statement:
 @dataclass
 class NumberLiteral(Expression):
     value: int | float
+ 
+@dataclass
+class BooleanLiteral(Expression):
+    value: bool
 
 @dataclass
 class BinaryExpression(Expression):
