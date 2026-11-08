@@ -139,7 +139,7 @@ class Parser:
         self.advance()
         name = self.expect(TokenType.IDENTIFIER)
         self.expect(TokenType.EQUAL) # =
-        initializer = self.parse_and()
+        initializer = self.parse_or()
         self.expect(TokenType.SEMICOLON)
         
         return VariableDeclaration(var_type, name, initializer)
@@ -177,7 +177,7 @@ class Parser:
 
         name = self.expect(TokenType.IDENTIFIER)
         self.expect(TokenType.EQUAL)
-        value = self.parse_and()
+        value = self.parse_or()
         self.expect(TokenType.SEMICOLON)
         
         return Assignment(name, value)
@@ -192,6 +192,21 @@ class Parser:
             op = token
             self.advance()
             right = self.parse_comparison()
+            left = BinaryExpression(left, op, right)
+            token = self.current_token()
+
+        return left
+
+    def parse_or(self):
+        """recognizes expressions with the or (||) operator"""
+
+        left = self.parse_and()
+        
+        token = self.current_token()
+        while token.type == TokenType.OR:
+            op = token
+            self.advance()
+            right = self.parse_and()
             left = BinaryExpression(left, op, right)
             token = self.current_token()
 
