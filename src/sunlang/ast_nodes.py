@@ -18,6 +18,11 @@ class BinaryExpression(Expression):
     right: Expression
 
 @dataclass
+class UnaryExpression(Expression):
+    op: Token
+    operand: Expression
+
+@dataclass
 class VariableDeclaration(Statement):
     var_type: Token
     name: Token
