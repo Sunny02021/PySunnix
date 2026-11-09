@@ -1,5 +1,5 @@
 from tokens import Token, TokenType
-from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment, UnaryExpression, BooleanLiteral, BlockStatement, IfStatement
+from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment, UnaryExpression, BooleanLiteral, BlockStatement, IfStatement, VariableReference, WhileStatement
 
 class ParserError(Exception):
     pass
@@ -67,6 +67,11 @@ class Parser:
             expression = self.parse_expression()
             self.expect(TokenType.RIGHT_PAREN)
             return expression
+
+        elif token.type == TokenType.IDENTIFIER:
+            tk = token
+            self.advance()
+            return VariableReference(tk)
 
         raise ParserError(
             f"Expected a number literal, but found '{token.value}' "
@@ -154,6 +159,7 @@ class Parser:
         token = self.current_token()
         while token.type != TokenType.EOF:
             statements.append(self.parse_statement())
+            token = self.current_token()
 
         return Program(statements)
 
@@ -229,6 +235,9 @@ class Parser:
         elif token.type == TokenType.IF:
             return self.parse_if_statement()
 
+        elif token.type == TokenType.WHILE:
+            return self.parse_while_statement()
+
         else:
             raise ParserError(
                 f"Unexpected token '{token.value}' of type {token.type.name} whilst attempting to read a statement."
@@ -252,3 +261,13 @@ class Parser:
                 else_branch = self.parse_block()
 
         return IfStatement(expression, block, else_branch)
+
+    def parse_while_statement(self):
+        """recognizes while statements"""
+        self.expect(TokenType.WHILE)
+        self.expect(TokenType.LEFT_PAREN)
+        expression = self.parse_or()
+        self.expect(TokenType.RIGHT_PAREN)
+        block = self.parse_block()
+
+        return WhileStatement(expression, block)
