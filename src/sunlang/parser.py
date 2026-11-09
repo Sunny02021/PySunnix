@@ -1,5 +1,6 @@
 from tokens import Token, TokenType
-from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment, UnaryExpression, BooleanLiteral, BlockStatement
+from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment, UnaryExpression, BooleanLiteral, BlockStatement, IfStatement
+
 class ParserError(Exception):
     pass
 
@@ -152,7 +153,7 @@ class Parser:
 
         token = self.current_token()
         while token.type != TokenType.EOF:
-            parse_statement()
+            statements.append(self.parse_statement())
 
         return Program(statements)
 
@@ -208,7 +209,8 @@ class Parser:
         token = self.current_token()
 
         while token.type not in (TokenType.RIGHT_BRACE, TokenType.EOF):
-            parse_statement()
+            statements.append(self.parse_statement())
+            token = self.current_token()
 
         self.expect(TokenType.RIGHT_BRACE)
 
@@ -219,13 +221,31 @@ class Parser:
         token = self.current_token()
 
         if token.type in (TokenType.INT, TokenType.FLOAT):
-            statements.append(self.parse_variable_declaration())
+            return self.parse_variable_declaration()
 
         elif token.type == TokenType.IDENTIFIER:
-            statements.append(self.parse_assignment())
+            return self.parse_assignment()
+
+        elif token.type == TokenType.IF:
+            return self.parse_if_statement()
 
         else:
             raise ParserError(
                 f"Unexpected token '{token.value}' of type {token.type.name} whilst attempting to read a statement."
                 f" line {token.line}, column {token.column}"
             )
+
+    def parse_if_statement(self):
+        """recognizes if and else statements"""
+        self.expect(TokenType.IF)
+        self.expect(TokenType.LEFT_PAREN)
+        expression = self.parse_or()
+        self.expect(TokenType.RIGHT_PAREN)
+        block = self.parse_block()
+        else_branch = None
+        
+        if self.current_token().type == TokenType.ELSE:
+            self.advance()
+            else_branch = self.parse_block()
+
+        return IfStatement(expression, block, else_branch)
