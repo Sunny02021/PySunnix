@@ -49,4 +49,4 @@ class BlockStatement(Statement):
 class IfStatement(Statement):
     condition: Expression
     then_branch: BlockStatement
-    else_branch: BlockStatement | None
+    else_branch: IfStatement | BlockStatement | None
