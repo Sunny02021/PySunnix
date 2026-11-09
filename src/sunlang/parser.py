@@ -236,7 +236,7 @@ class Parser:
             )
 
     def parse_if_statement(self):
-        """recognizes if and else statements"""
+        """recognizes if, else if and else statements"""
         self.expect(TokenType.IF)
         self.expect(TokenType.LEFT_PAREN)
         expression = self.parse_or()
@@ -246,6 +246,9 @@ class Parser:
         
         if self.current_token().type == TokenType.ELSE:
             self.advance()
-            else_branch = self.parse_block()
+            if self.current_token().type == TokenType.IF:
+                else_branch = self.parse_if_statement()
+            else:
+                else_branch = self.parse_block()
 
         return IfStatement(expression, block, else_branch)
