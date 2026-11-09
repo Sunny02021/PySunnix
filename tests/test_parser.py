@@ -8,6 +8,8 @@ from parser import Parser
 code = """
 if (true && 10 > 5) {
     int age = 20;
+} else if (false && 10 < 5) {
+    int age = 21;
 }
 """
 
