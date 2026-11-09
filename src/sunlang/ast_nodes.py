@@ -44,3 +44,9 @@ class Program:
 @dataclass
 class BlockStatement(Statement):
     statements: list[Statement]
+
+@dataclass
+class IfStatement(Statement):
+    condition: Expression
+    then_branch: BlockStatement
+    else_branch: BlockStatement | None
