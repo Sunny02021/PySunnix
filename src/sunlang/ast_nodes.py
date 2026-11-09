@@ -59,3 +59,8 @@ class WhileStatement(Statement):
 @dataclass
 class VariableReference(Expression):
     name: Token
+
+@dataclass
+class FunctionCall(Expression):
+    name: Token
+    args: list[Expression]
