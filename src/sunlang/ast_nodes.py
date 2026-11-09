@@ -50,3 +50,12 @@ class IfStatement(Statement):
     condition: Expression
     then_branch: BlockStatement
     else_branch: IfStatement | BlockStatement | None
+
+@dataclass
+class WhileStatement(Statement):
+    condition: Expression
+    body: BlockStatement
+
+@dataclass
+class VariableReference(Expression):
+    name: Token
