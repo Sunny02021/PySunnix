@@ -6,10 +6,10 @@ from lexer import Lexer
 from parser import Parser
 
 code = """
-if (true && 10 > 5) {
-    int age = 20;
-} else if (false && 10 < 5) {
-    int age = 21;
+int age = 0;
+
+while (age < 18) {
+    age = age + 1;
 }
 """
 
@@ -22,9 +22,9 @@ parser = Parser(tokens)
 #node = parser.parse_factor()
 #node = parser.parse_expression()
 #node = parser.parse_variable_declaration()
-#node = parser.parse_program()
+node = parser.parse_program()
 #node = parser.parse_block()
-node = parser.parse_if_statement()
+#node = parser.parse_if_statement()
 
 print(node)
 print(type(node))
