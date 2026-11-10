@@ -16,6 +16,16 @@ class Interpreter:
             return expression.value
         elif isinstance(expression, BinaryExpression):
             left = self.evaluate(expression.left)
+
+            match expression.op.value:
+                case '&&':
+                    if left is False:
+                        return False
+            
+                case '||':
+                    if left is True:
+                        return True
+
             right = self.evaluate(expression.right)
 
             match expression.op.value:
@@ -43,4 +53,7 @@ class Interpreter:
                     return left >= right
                 case '<=':
                     return left <= right
-                    
+                case '&&':
+                    return left and right
+                case '||':
+                    return left or right
