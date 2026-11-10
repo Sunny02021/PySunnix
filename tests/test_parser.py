@@ -6,8 +6,7 @@ from lexer import Lexer
 from parser import Parser
 
 code = """
-hello();
-print(10);
+print(sum(10, 20));
 """
 
 lexer = Lexer(code)
