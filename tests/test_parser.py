@@ -1,16 +1,13 @@
 import sys
 
-sys.path.insert(0, "src/sunlang")
+sys.path.insert(0, "src/sunnix")
 
 from lexer import Lexer
 from parser import Parser
 
 code = """
-int age = 0;
-
-while (age < 18) {
-    age = age + 1;
-}
+hello();
+print(10);
 """
 
 lexer = Lexer(code)
