@@ -1,5 +1,5 @@
 from tokens import Token, TokenType
-from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment, UnaryExpression, BooleanLiteral, BlockStatement, IfStatement, VariableReference, WhileStatement, FunctionCall
+from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment, UnaryExpression, BooleanLiteral, BlockStatement, IfStatement, VariableReference, WhileStatement, FunctionCall, ExpressionStatement
 
 class ParserError(Exception):
     pass
@@ -81,7 +81,6 @@ class Parser:
             peek = self.peek()
             if peek is not None and peek.type == TokenType.LEFT_PAREN:
                 instruction = self.parse_function_call()
-                self.expect(TokenType.SEMICOLON)
                 return instruction
             else:
                 tk = token
@@ -250,7 +249,7 @@ class Parser:
             if peek is not None and peek.type == TokenType.LEFT_PAREN:
                 instruction = self.parse_function_call()
                 self.expect(TokenType.SEMICOLON)
-                return instruction
+                return ExpressionStatement(instruction)
             else:
                 return self.parse_assignment()
 
@@ -298,7 +297,6 @@ class Parser:
         """recognizes function calls (sum(50 + 17))"""
         name = self.expect(TokenType.IDENTIFIER)
         self.expect(TokenType.LEFT_PAREN)
-
         args: list[Expression] = []
 
         # case 1: no arg passed
