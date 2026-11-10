@@ -73,7 +73,7 @@ class Parser:
 
         elif token.type == TokenType.LEFT_PAREN:
             self.advance()
-            expression = self.parse_expression()
+            expression = self.parse_or()
             self.expect(TokenType.RIGHT_PAREN)
             return expression
 
