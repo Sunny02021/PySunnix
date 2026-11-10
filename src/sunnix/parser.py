@@ -245,8 +245,12 @@ class Parser:
             return self.parse_variable_declaration()
 
         elif token.type == TokenType.IDENTIFIER:
-            if self.peek().type == TokenType.LEFT_PAREN:
-                return self.parse_function_call()
+            peek = self.peek()
+        
+            if peek is not None and peek.type == TokenType.LEFT_PAREN:
+                instruction = self.parse_function_call()
+                self.expect(TokenType.SEMICOLON)
+                return instruction
             else:
                 return self.parse_assignment()
 
@@ -306,7 +310,7 @@ class Parser:
             args.append(self.parse_or())
 
             peek = self.peek()
-            if peek is not None and peek.type == TokenType.RIGHT_PAREN:
+            if self.current_token().type == TokenType.RIGHT_PAREN:
                 self.expect(TokenType.RIGHT_PAREN)
                 return FunctionCall(name, args)
 
