@@ -8,9 +8,8 @@ from parser import Parser
 from interpreter import Interpreter
 
 code = """
-print(10 > 5);
-print(20 == 10);
-print(5 <= 5);
+print(false && (10 / 0 > 2));
+print(true || (10 / 0 > 2));
 """
 
 lexer = Lexer(code)
