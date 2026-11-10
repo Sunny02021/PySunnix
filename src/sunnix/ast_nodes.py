@@ -64,3 +64,7 @@ class VariableReference(Expression):
 class FunctionCall(Expression):
     name: Token
     args: list[Expression]
+
+@dataclass
+class ExpressionStatement(Statement):
+    expression: Expression
