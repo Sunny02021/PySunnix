@@ -8,9 +8,9 @@ from parser import Parser
 from interpreter import Interpreter
 
 code = """
-print(10 + 5 * 2);
-print((10 + 5) * 2);
-print(20 / 0);
+print(10 > 5);
+print(20 == 10);
+print(5 <= 5);
 """
 
 lexer = Lexer(code)
