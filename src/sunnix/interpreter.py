@@ -1,32 +1,39 @@
-from ast_nodes import NumberLiteral, BooleanLiteral, BinaryExpression, VariableReference, VariableDeclaration, Assignment
+from ast_nodes import NumberLiteral, BooleanLiteral, BinaryExpression, VariableReference, VariableDeclaration, Assignment, BlockStatement
 
 class Interpreter:
-    def __init__(self):
+    def __init__(self, program):
         self.variables = {}
+        self.program = program
 
-    def interpret(self, program):
-        for statement in program.statements:
-            if isinstance(statement, VariableDeclaration):
-                name = statement.name.value
-                value = self.evaluate(statement.initializer, program)
-                self.variables[name] = value
+    def interpret(self):
+        for statement in self.program.statements:
+            self.execute_statement(statement)
 
-            elif isinstance(statement, Assignment):
-                name = statement.name.value
-                expression = self.evaluate(statement.value, program)
-                if statement.name.value not in self.variables:
-                    raise NameError(f"name '{name}' is not defined")
+    def execute_statement(self, statement):
+        if isinstance(statement, VariableDeclaration):
+            name = statement.name.value
+            value = self.evaluate(statement.initializer)
+            self.variables[name] = value
 
-                self.variables[name] = expression
+        elif isinstance(statement, Assignment):
+            name = statement.name.value
+            expression = self.evaluate(statement.value)
+            if statement.name.value not in self.variables:
+                raise NameError(f"name '{name}' is not defined")
+    
+            self.variables[name] = expression
 
-    def evaluate(self, expression, program):
+        elif isinstance(statement, BlockStatement):
+            self.interpret(statement)
+
+    def evaluate(self, expression):
         """converts AST values into Python values"""
         if isinstance(expression, NumberLiteral):
             return expression.value
         elif isinstance(expression, BooleanLiteral):
             return expression.value
         elif isinstance(expression, BinaryExpression):
-            left = self.evaluate(expression.left, program)
+            left = self.evaluate(expression.left)
 
             match expression.op.value:
                 case '&&':
@@ -37,7 +44,7 @@ class Interpreter:
                     if left is True:
                         return True
 
-            right = self.evaluate(expression.right, program)
+            right = self.evaluate(expression.right)
 
             match expression.op.value:
                 case '+':
