@@ -8,8 +8,9 @@ from parser import Parser
 from interpreter import Interpreter
 
 code = """
-print(false && (10 / 0 > 2));
-print(true || (10 / 0 > 2));
+int idade = 20;
+int resultado = 10 + 5;
+float altura = 1.75;
 """
 
 lexer = Lexer(code)
@@ -19,8 +20,11 @@ parser = Parser(tokens)
 program = parser.parse_program()
 
 interpreter = Interpreter()
+interpreter.interpret(program)
 
-for statement in program.statements:
-    expression = statement.expression
-    result = interpreter.evaluate(expression.args[0])
-    print(result)
+print(interpreter.variables)
+
+#for statement in program.statements:
+#    expression = statement.expression
+#    result = interpreter.evaluate(expression.args[0])
+#    print(result)
