@@ -18,13 +18,14 @@ class Interpreter:
         elif isinstance(statement, Assignment):
             name = statement.name.value
             expression = self.evaluate(statement.value)
-            if statement.name.value not in self.variables:
+            if name not in self.variables:
                 raise NameError(f"name '{name}' is not defined")
     
             self.variables[name] = expression
 
         elif isinstance(statement, BlockStatement):
-            self.interpret(statement)
+            for inner_statement in statement.statements:
+                self.execute_statement(inner_statement)
 
     def evaluate(self, expression):
         """converts AST values into Python values"""
