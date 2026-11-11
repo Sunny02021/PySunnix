@@ -1,4 +1,4 @@
-from ast_nodes import NumberLiteral, BooleanLiteral, BinaryExpression, VariableReference, VariableDeclaration
+from ast_nodes import NumberLiteral, BooleanLiteral, BinaryExpression, VariableReference, VariableDeclaration, Assignment
 
 class Interpreter:
     def __init__(self):
@@ -10,6 +10,14 @@ class Interpreter:
                 name = statement.name.value
                 value = self.evaluate(statement.initializer, program)
                 self.variables[name] = value
+
+            elif isinstance(statement, Assignment):
+                name = statement.name.value
+                expression = self.evaluate(statement.value, program)
+                if statement.name.value not in self.variables:
+                    raise NameError(f"name '{name}' is not defined")
+
+                self.variables[name] = expression
 
     def evaluate(self, expression, program):
         """converts AST values into Python values"""
