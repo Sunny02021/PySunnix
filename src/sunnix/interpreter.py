@@ -1,4 +1,4 @@
-from ast_nodes import NumberLiteral, BooleanLiteral, BinaryExpression, VariableReference, VariableDeclaration, Assignment, BlockStatement
+from ast_nodes import NumberLiteral, BooleanLiteral, BinaryExpression, VariableReference, VariableDeclaration, Assignment, BlockStatement, UnaryExpression
 
 class Interpreter:
     def __init__(self, program):
@@ -33,6 +33,24 @@ class Interpreter:
             return expression.value
         elif isinstance(expression, BooleanLiteral):
             return expression.value
+        elif isinstance(expression, VariableReference):
+            if expression.name.value in self.variables:
+                return self.variables[expression.name.value]
+            else:
+                raise NameError(f"name '{expression.name.value}' is not defined")
+
+        elif isinstance(expression, UnaryExpression):
+            value = self.evaluate(expression.operand)
+            match expression.op.value:
+                case '+':
+                    return +value
+                case '-':
+                    return -value
+                case '!':
+                    return not value
+                case _:
+                    raise ValueError(f"Unknown unary operator: {expression.op!r}")
+
         elif isinstance(expression, BinaryExpression):
             left = self.evaluate(expression.left)
 
@@ -76,9 +94,3 @@ class Interpreter:
                     return left and right
                 case '||':
                     return left or right
-
-        elif isinstance(expression, VariableReference):
-            if expression.name.value in self.variables:
-                return self.variables[expression.name.value]
-            else:
-                raise NameError(f"name '{expression.name.value}' is not defined")
