@@ -5,11 +5,21 @@ sys.path.insert(0, "src/sunnix")
 from lexer import Lexer
 from parser import Parser
 
-code = """
-print(sum(10 + 5, 20 * 2));
+#code = """
+#{
+#    print(sum(10 + 5, 20 * 2));
+#}
+#"""
+
+code2 = """
+{
+    {
+        print(67);
+    }
+}
 """
 
-lexer = Lexer(code)
+lexer = Lexer(code2)
 tokens = lexer.tokenize()
 
 parser = Parser(tokens)
