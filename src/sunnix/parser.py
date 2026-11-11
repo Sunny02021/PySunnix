@@ -259,6 +259,13 @@ class Parser:
         elif token.type == TokenType.WHILE:
             return self.parse_while_statement()
 
+        # for in braces code blocks
+        # {
+        #   print(67)
+        # }
+        elif token.type == TokenType.LEFT_BRACE:
+            return self.parse_block()
+
         else:
             raise ParserError(
                 f"Unexpected token '{token.value}' of type {token.type.name} whilst attempting to read a statement."
