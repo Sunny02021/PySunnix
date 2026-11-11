@@ -96,7 +96,7 @@ class Parser:
         """recognises unary operators (-10, +10... etc)"""
         token = self.current_token()
 
-        if token.type in (TokenType.MINUS, TokenType.PLUS):
+        if token.type in (TokenType.MINUS, TokenType.PLUS, TokenType.NOT):
             op = token
             self.advance()
             operand = self.parse_unary()
