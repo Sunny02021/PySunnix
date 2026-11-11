@@ -20,8 +20,8 @@ tokens = lexer.tokenize()
 parser = Parser(tokens)
 program = parser.parse_program()
 
-interpreter = Interpreter()
-interpreter.interpret(program)
+interpreter = Interpreter(program)
+interpreter.interpret()
 
 print(interpreter.variables)
 
