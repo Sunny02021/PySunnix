@@ -8,10 +8,12 @@ from parser import Parser
 from interpreter import Interpreter
 
 code = """
-int idade = 20;
-int resultado = 10 + 5;
-float altura = 1.75;
-resultado = 20;
+{
+    int idade = 20;
+    int resultado = 10 + 5;
+    float altura = 1.75;
+    resultado = 20;
+}
 """
 
 lexer = Lexer(code)
