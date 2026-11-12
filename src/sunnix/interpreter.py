@@ -1,4 +1,4 @@
-from ast_nodes import NumberLiteral, BooleanLiteral, BinaryExpression, VariableReference, VariableDeclaration, Assignment, BlockStatement, UnaryExpression, FunctionCall, StringLiteral, ExpressionStatement
+from ast_nodes import NumberLiteral, BooleanLiteral, BinaryExpression, VariableReference, VariableDeclaration, Assignment, BlockStatement, UnaryExpression, FunctionCall, StringLiteral, ExpressionStatement, IfStatement
 
 class Interpreter:
     def __init__(self, program):
@@ -31,6 +31,14 @@ class Interpreter:
         
         elif isinstance(statement, ExpressionStatement):
             self.evaluate(statement.expression)
+
+        elif isinstance(statement, IfStatement):
+            condition = self.evaluate(statement.condition)
+            if condition:
+                self.execute_statement(statement.then_branch)
+            else:
+                if statement.else_branch is not None:
+                    self.execute_statement(statement.else_branch)
 
     def evaluate(self, expression):
         """converts AST values into Python values"""
