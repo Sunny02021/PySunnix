@@ -8,9 +8,13 @@ from parser import Parser
 from interpreter import Interpreter
 
 code = """
-print("Hello, Sunnix!");
-print(10 + 5, 20 * 2);
-unknown_function(42);
+if (false) {
+    print("A");
+} else if (true) {
+    print("B");
+} else {
+    print("C");
+}
 """
 
 lexer = Lexer(code)
