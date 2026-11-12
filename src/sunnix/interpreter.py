@@ -1,4 +1,4 @@
-from ast_nodes import NumberLiteral, BooleanLiteral, BinaryExpression, VariableReference, VariableDeclaration, Assignment, BlockStatement, UnaryExpression
+from ast_nodes import NumberLiteral, BooleanLiteral, BinaryExpression, VariableReference, VariableDeclaration, Assignment, BlockStatement, UnaryExpression, FunctionCall, StringLiteral, ExpressionStatement
 
 class Interpreter:
     def __init__(self, program):
@@ -26,12 +26,17 @@ class Interpreter:
         elif isinstance(statement, BlockStatement):
             for inner_statement in statement.statements:
                 self.execute_statement(inner_statement)
+        
+        elif isinstance(statement, ExpressionStatement):
+            self.evaluate(statement.expression)
 
     def evaluate(self, expression):
         """converts AST values into Python values"""
         if isinstance(expression, NumberLiteral):
             return expression.value
         elif isinstance(expression, BooleanLiteral):
+            return expression.value
+        elif isinstance(expression, StringLiteral):
             return expression.value
         elif isinstance(expression, VariableReference):
             if expression.name.value in self.variables:
@@ -50,6 +55,19 @@ class Interpreter:
                     return not value
                 case _:
                     raise ValueError(f"Unknown unary operator: {expression.op!r}")
+
+        elif isinstance(expression, FunctionCall):
+            name = expression.name.value
+
+            values = []
+            for arg in expression.args:
+                value = self.evaluate(arg)
+                values.append(value)
+
+            if name == "print":
+                print(*values) # i'll use python functions for now
+            else:
+                raise NameError(f"Undefined function '{name}'")
 
         elif isinstance(expression, BinaryExpression):
             left = self.evaluate(expression.left)
