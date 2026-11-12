@@ -16,6 +16,10 @@ class BooleanLiteral(Expression):
     value: bool
 
 @dataclass
+class StringLiteral(Expression):
+    value: str
+
+@dataclass
 class BinaryExpression(Expression):
     left: Expression
     op: Token
