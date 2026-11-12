@@ -8,11 +8,9 @@ from parser import Parser
 from interpreter import Interpreter
 
 code = """
-print(-10);
-print(+5);
-print(!true);
-print(!false);
-print(-(-10));
+print("Hello, Sunnix!");
+print(10 + 5, 20 * 2);
+unknown_function(42);
 """
 
 lexer = Lexer(code)
@@ -24,9 +22,4 @@ program = parser.parse_program()
 interpreter = Interpreter(program)
 interpreter.interpret()
 
-#print(interpreter.variables)
 
-for statement in program.statements:
-    expression = statement.expression
-    result = interpreter.evaluate(expression.args[0])
-    print(result)
