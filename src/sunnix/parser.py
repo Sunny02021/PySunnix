@@ -1,5 +1,5 @@
 from tokens import Token, TokenType
-from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment, UnaryExpression, BooleanLiteral, BlockStatement, IfStatement, VariableReference, WhileStatement, FunctionCall, ExpressionStatement
+from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment, UnaryExpression, BooleanLiteral, BlockStatement, IfStatement, VariableReference, WhileStatement, FunctionCall, ExpressionStatement, StringLiteral
 
 class ParserError(Exception):
     pass
@@ -70,6 +70,11 @@ class Parser:
             bool_literal = BooleanLiteral(False)
             self.advance()
             return bool_literal
+
+        elif token.type == TokenType.STRING:
+            str_literal = StringLiteral(token.value)
+            self.advance()
+            return str_literal
 
         elif token.type == TokenType.LEFT_PAREN:
             self.advance()
