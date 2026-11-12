@@ -6,10 +6,12 @@ class Interpreter:
         self.program = program
 
     def interpret(self):
+        """calls execute_statement() for each statement on program.statements"""
         for statement in self.program.statements:
             self.execute_statement(statement)
 
     def execute_statement(self, statement):
+        """evaluates and executes the statement based on the object's type"""
         if isinstance(statement, VariableDeclaration):
             name = statement.name.value
             value = self.evaluate(statement.initializer)
