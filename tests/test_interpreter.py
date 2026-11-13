@@ -8,12 +8,11 @@ from parser import Parser
 from interpreter import Interpreter
 
 code = """
-if (false) {
-    print("A");
-} else if (true) {
-    print("B");
-} else {
-    print("C");
+int contador = 0;
+
+while (contador < 5) {
+    print(contador);
+    contador = contador + 1;
 }
 """
 
