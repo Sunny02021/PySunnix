@@ -1,4 +1,18 @@
 from ast_nodes import NumberLiteral, BooleanLiteral, BinaryExpression, VariableReference, VariableDeclaration, Assignment, BlockStatement, UnaryExpression, FunctionCall, StringLiteral, ExpressionStatement, IfStatement, WhileStatement
+import operator
+
+BINARY_OPS = {
+    '+': operator.add,
+    '-': operator.sub,
+    '*': operator.mul,
+    '%': operator.mod,
+    '==': operator.eq,
+    '!=': operator.ne,
+    '>': operator.gt,
+    '<': operator.lt,
+    '>=': operator.ge,
+    '<=': operator.le,
+}
 
 class Interpreter:
     def __init__(self, program):
@@ -88,46 +102,24 @@ class Interpreter:
             else:
                 raise NameError(f"Undefined function '{name}'")
 
+
         elif isinstance(expression, BinaryExpression):
             left = self.evaluate(expression.left)
-
-            match expression.op.value:
-                case '&&':
-                    if left is False:
-                        return False
-            
-                case '||':
-                    if left is True:
-                        return True
-
+            op = expression.op.value
+        
+            if op == '&&':
+                return left and self.evaluate(expression.right)
+            if op == '||':
+                return left or self.evaluate(expression.right)
+        
             right = self.evaluate(expression.right)
-
-            match expression.op.value:
-                case '+':
-                    return left + right
-                case '-':
-                    return left - right
-                case '*':
-                    return left * right
-                case '/':
-                    if right == 0:
-                        raise ZeroDivisionError("It is not possible to divide by 0")
-                    return left / right
-                case '%':
-                    return left % right
-                case '==':
-                    return left == right
-                case '!=':
-                    return left != right
-                case '>':
-                    return left > right
-                case '<':
-                    return left < right
-                case '>=':
-                    return left >= right
-                case '<=':
-                    return left <= right
-                case '&&':
-                    return left and right
-                case '||':
-                    return left or right
+        
+            if op == '/':
+                if right == 0:
+                    raise ZeroDivisionError("It is not possible to divide by 0")
+                return left / right
+        
+            if op in BINARY_OPS:
+                return BINARY_OPS[op](left, right)
+        
+            raise ValueError(f"Unknown operator: {op}")
