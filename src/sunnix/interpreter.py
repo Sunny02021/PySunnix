@@ -1,4 +1,4 @@
-from ast_nodes import NumberLiteral, BooleanLiteral, BinaryExpression, VariableReference, VariableDeclaration, Assignment, BlockStatement, UnaryExpression, FunctionCall, StringLiteral, ExpressionStatement, IfStatement
+from ast_nodes import NumberLiteral, BooleanLiteral, BinaryExpression, VariableReference, VariableDeclaration, Assignment, BlockStatement, UnaryExpression, FunctionCall, StringLiteral, ExpressionStatement, IfStatement, WhileStatement
 
 class Interpreter:
     def __init__(self, program):
@@ -41,6 +41,13 @@ class Interpreter:
             else:
                 if statement.else_branch is not None:
                     self.execute_statement(statement.else_branch)
+
+        elif isinstance(statement, WhileStatement):
+            """for while statements"""
+            condition = self.evaluate(statement.condition)
+            while condition:
+                self.execute_statement(statement.body)
+                condition = self.evaluate(statement.condition)
 
     def evaluate(self, expression):
         """converts AST values into Python values"""
