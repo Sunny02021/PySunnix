@@ -33,8 +33,10 @@ class Interpreter:
             self.evaluate(statement.expression)
 
         elif isinstance(statement, IfStatement):
+            """for if, else if and else statements"""
             condition = self.evaluate(statement.condition)
             if condition:
+                """falls on the BlockStatement treatment"""
                 self.execute_statement(statement.then_branch)
             else:
                 if statement.else_branch is not None:
