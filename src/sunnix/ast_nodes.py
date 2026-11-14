@@ -70,5 +70,11 @@ class FunctionCall(Expression):
     args: list[Expression]
 
 @dataclass
+class FunctionDeclaration(Statement):
+    name: Token
+    args: list[Tokens]
+    body: BlockStatement
+
+@dataclass
 class ExpressionStatement(Statement):
     expression: Expression
