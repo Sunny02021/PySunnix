@@ -8,15 +8,33 @@ from parser import Parser
 from interpreter import Interpreter
 
 code = """
-int contador = 0;
+int x = 10;
 
-while (contador < 5) {
-    print(contador);
-    contador = contador + 1;
+{
+    int y = 20;
+    print(x);
+    print(y);
 }
 """
+# should print:
+# 10
+# 20
 
-lexer = Lexer(code)
+code2 = """
+int x = 10;
+
+{
+    int x = 20;
+    print(x);
+}
+
+print(x);
+"""
+# should print:
+# 20
+# 10
+
+lexer = Lexer(code2)
 tokens = lexer.tokenize()
 
 parser = Parser(tokens)
