@@ -29,7 +29,7 @@ class Interpreter:
         if isinstance(statement, VariableDeclaration):
             name = statement.name.value
             value = self.evaluate(statement.initializer)
-            self.variables[-1][name] = value # the last dict represents the
+            self.scopes[-1][name] = value # the last dict represents the
             # innermost scope. a.k.a, the one we're currently working with
 
         elif isinstance(statement, Assignment):
@@ -81,10 +81,11 @@ class Interpreter:
         elif isinstance(expression, StringLiteral):
             return expression.value
         elif isinstance(expression, VariableReference):
-            if expression.name.value in self.variables:
-                return self.variables[expression.name.value]
-            else:
-                raise NameError(f"name '{expression.name.value}' is not defined")
+            for scope in reversed(self.scopes):
+                if expression.name.value in scope:
+                    return scope[expression.name.value]
+
+            raise NameError(f"name '{expression.name.value}' is not defined")
 
         elif isinstance(expression, UnaryExpression):
             value = self.evaluate(expression.operand)
