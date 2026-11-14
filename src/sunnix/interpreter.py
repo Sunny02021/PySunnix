@@ -16,7 +16,7 @@ BINARY_OPS = {
 
 class Interpreter:
     def __init__(self, program):
-        self.scopes = [{}]
+        self.scopes = [{}] # the first dict is the global scope
         self.program = program
 
     def interpret(self):
@@ -128,4 +128,4 @@ class Interpreter:
         self.scopes.append({})
 
     def exit_scope(self):
-        self.scopes.pop(-1)
+        self.scopes.pop()
