@@ -69,7 +69,11 @@ class Interpreter:
                 condition = self.evaluate(statement.condition)
 
     def evaluate(self, expression):
-        """converts AST values into Python values"""
+        """converts AST values into Python values
+        
+        for NumberLiteral, BooleanLiteral and StringLiteral we simply
+        return it, since our Lexer already converted
+        """
         if isinstance(expression, NumberLiteral):
             return expression.value
         elif isinstance(expression, BooleanLiteral):
