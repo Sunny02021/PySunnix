@@ -35,10 +35,12 @@ class Interpreter:
         elif isinstance(statement, Assignment):
             name = statement.name.value
             expression = self.evaluate(statement.value)
-            if name not in self.variables:
-                raise NameError(f"name '{name}' is not defined")
+            for scope in reversed(self.scopes):
+                if name in scope:
+                    scope[name] = expression
+                    return
 
-            self.variables[name] = expression
+            raise NameError(f"name '{name}' is not defined")
 
         elif isinstance(statement, BlockStatement):
             self.enter_scope()
