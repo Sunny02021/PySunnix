@@ -16,7 +16,7 @@ BINARY_OPS = {
 
 class Interpreter:
     def __init__(self, program):
-        self.variables = {}
+        self.scopes = [{}]
         self.program = program
 
     def interpret(self):
@@ -36,13 +36,13 @@ class Interpreter:
             expression = self.evaluate(statement.value)
             if name not in self.variables:
                 raise NameError(f"name '{name}' is not defined")
-    
+
             self.variables[name] = expression
 
         elif isinstance(statement, BlockStatement):
             for inner_statement in statement.statements:
                 self.execute_statement(inner_statement)
-        
+
         elif isinstance(statement, ExpressionStatement):
             self.evaluate(statement.expression)
 
@@ -106,20 +106,26 @@ class Interpreter:
         elif isinstance(expression, BinaryExpression):
             left = self.evaluate(expression.left)
             op = expression.op.value
-        
+
             if op == '&&':
                 return left and self.evaluate(expression.right)
             if op == '||':
                 return left or self.evaluate(expression.right)
-        
+
             right = self.evaluate(expression.right)
-        
+
             if op == '/':
                 if right == 0:
                     raise ZeroDivisionError("It is not possible to divide by 0")
                 return left / right
-        
+
             if op in BINARY_OPS:
                 return BINARY_OPS[op](left, right)
-        
+
             raise ValueError(f"Unknown operator: {op}")
+
+    def enter_scope(self):
+        self.scopes.append({})
+
+    def exit_scope(self):
+        self.scopes.pop(-1)
