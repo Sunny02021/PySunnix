@@ -70,9 +70,14 @@ class FunctionCall(Expression):
     args: list[Expression]
 
 @dataclass
+class Parameter:
+    param_type: Token
+    name: Token
+
+@dataclass
 class FunctionDeclaration(Statement):
     name: Token
-    args: list[Tokens]
+    parameters: list[Parameter]
     body: BlockStatement
 
 @dataclass
