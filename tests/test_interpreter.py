@@ -11,28 +11,23 @@ code = """
 int x = 10;
 
 {
-    int y = 20;
-    print(x);
-    print(y);
-}
-"""
-# should print:
-# 10
-# 20
-
-code2 = """
-int x = 10;
-
-{
-    int x = 20;
+    x = 20;
     print(x);
 }
 
 print(x);
 """
-# should print:
 # 20
-# 10
+# 20
+
+code2 = """
+{
+    int y = 42;
+}
+
+print(y);
+"""
+# NameError
 
 lexer = Lexer(code2)
 tokens = lexer.tokenize()
