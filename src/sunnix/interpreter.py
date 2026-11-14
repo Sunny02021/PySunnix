@@ -29,7 +29,8 @@ class Interpreter:
         if isinstance(statement, VariableDeclaration):
             name = statement.name.value
             value = self.evaluate(statement.initializer)
-            self.variables[name] = value
+            self.variables[-1][name] = value # the last dict represents the
+            # innermost scope. a.k.a, the one we're currently working with
 
         elif isinstance(statement, Assignment):
             name = statement.name.value
@@ -40,8 +41,12 @@ class Interpreter:
             self.variables[name] = expression
 
         elif isinstance(statement, BlockStatement):
-            for inner_statement in statement.statements:
-                self.execute_statement(inner_statement)
+            self.enter_scope()
+            try:
+                for inner_statement in statement.statements:
+                    self.execute_statement(inner_statement)
+            finally:
+                self.exit_scope()
 
         elif isinstance(statement, ExpressionStatement):
             self.evaluate(statement.expression)
