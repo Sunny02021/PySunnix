@@ -128,7 +128,14 @@ class Interpreter:
 
             if name == "print":
                 # change every None to "null"
-                print_values = ["null" if value is None else value for value in values]
+                # every True to "true"
+                # every False to "false"
+                print_values = [
+                    "null" if value is None
+                    else "true" if value is True
+                    else "false" if value is False
+                    else value for value in values
+                ]
 
                 print(*print_values) # i'll use python functions for now
 
