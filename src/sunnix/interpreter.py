@@ -22,8 +22,16 @@ class Interpreter:
 
     def interpret(self):
         """calls execute_statement() for each statement on program.statements"""
+        # since we want a function to be callable even if its declaration
+        # appears after the call in the source code, we add it to self.functions
+        # in advance
         for statement in self.program.statements:
-            self.execute_statement(statement)
+            if isinstance(statement, FunctionDeclaration):
+                self.functions[statement.name.value] = statement
+
+        for statement in self.program.statements:
+            if not isinstance(statement, FunctionDeclaration):
+                self.execute_statement(statement)
 
     def execute_statement(self, statement):
         """evaluates and executes the statement based on the object's type"""
