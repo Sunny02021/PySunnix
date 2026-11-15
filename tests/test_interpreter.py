@@ -7,11 +7,12 @@ from parser import Parser
 from interpreter import Interpreter
 
 code = """
-func sum(int a, int b, int c) {
-    print(a + b * c);
+func sum(int a, int b) {
+    return a + b;
 }
 
-sum(10, 20, 30);
+int result = sum(10, 20);
+print(result);
 """
 
 lexer = Lexer(code)
