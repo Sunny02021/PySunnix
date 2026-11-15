@@ -1,4 +1,5 @@
 from ast_nodes import NumberLiteral, BooleanLiteral, BinaryExpression, VariableReference, VariableDeclaration, Assignment, BlockStatement, UnaryExpression, FunctionCall, StringLiteral, ExpressionStatement, IfStatement, WhileStatement, FunctionDeclaration
+from errors import ReturnException
 import operator
 
 BINARY_OPS = {
@@ -79,6 +80,10 @@ class Interpreter:
                 self.execute_statement(statement.body)
                 condition = self.evaluate(statement.condition)
 
+        elif isinstance(statement, ReturnStatement):
+            value = self.evaluate(statement.value)
+            raise ReturnException(value)
+
     def evaluate(self, expression):
         """converts AST values into Python values
         
@@ -140,6 +145,9 @@ class Interpreter:
 
                     # executing the function body
                     self.execute_statement(function.body)
+
+                except ReturnException as result:
+                    return result.value
                 finally:
                     self.exit_scope()
 
