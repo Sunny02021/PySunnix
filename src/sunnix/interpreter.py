@@ -123,10 +123,15 @@ class Interpreter:
             elif name in self.functions:
                 function = self.functions[name]
 
-                if len(values) != len(function.parameters):
+                if len(values) < len(function.parameters):
                     raise TypeError(
                         f"{name}() missing {len(function.parameters) - len(values)} "
                         "required positional argument."
+                    )
+
+                if len(values) > len(function.parameters):
+                    raise TypeError(
+                        f"{name}() has too many positional arguments."
                     )
 
             else:
