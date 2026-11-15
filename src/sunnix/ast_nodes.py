@@ -1,4 +1,4 @@
-from tokens import Token
+from .tokens import Token
 from dataclasses import dataclass
 
 class Expression:
