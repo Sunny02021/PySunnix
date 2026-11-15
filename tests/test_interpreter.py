@@ -7,13 +7,14 @@ from parser import Parser
 from interpreter import Interpreter
 
 code = """
-print(null == null);
-print(null != null);
+int x = 10;
 
 func test() {
+    x = 20;
 }
 
-print(test() == null);
+test();
+print(x);
 """
 
 lexer = Lexer(code)
