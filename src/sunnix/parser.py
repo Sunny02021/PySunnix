@@ -76,6 +76,10 @@ class Parser:
             self.advance()
             return str_literal
 
+        elif token.type == TokenType.NULL:
+            self.advance()
+            return NullLiteral()
+
         elif token.type == TokenType.LEFT_PAREN:
             self.advance()
             expression = self.parse_or()
