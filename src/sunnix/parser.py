@@ -1,5 +1,5 @@
 from tokens import Token, TokenType
-from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment, UnaryExpression, BooleanLiteral, BlockStatement, IfStatement, VariableReference, WhileStatement, FunctionCall, ExpressionStatement, StringLiteral
+from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment, UnaryExpression, BooleanLiteral, BlockStatement, IfStatement, VariableReference, WhileStatement, FunctionCall, ExpressionStatement, StringLiteral, Parameter
 
 class ParserError(Exception):
     pass
@@ -334,3 +334,12 @@ class Parser:
             self.expect(TokenType.RIGHT_PAREN)
 
             return FunctionCall(name, args)
+
+    def parse_parameter(self):
+        param_type = self.current_token()
+        if param_type not in (TokenType.INT, TokenType.FLOAT):
+            raise ParserError("Expected parameter type")
+
+        self.advance()
+        name = self.expect(TokenType.IDENTIFIER)
+        return Parameter(param_type, name)
