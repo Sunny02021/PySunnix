@@ -16,6 +16,10 @@ class BooleanLiteral(Expression):
     value: bool
 
 @dataclass
+class NullLiteral(Expression):
+    pass # null doesn't need to hold a value
+
+@dataclass
 class StringLiteral(Expression):
     value: str
 
