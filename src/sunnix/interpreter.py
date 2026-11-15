@@ -120,6 +120,15 @@ class Interpreter:
 
             if name == "print":
                 print(*values) # i'll use python functions for now
+            elif name in self.functions:
+                function = self.functions[name]
+
+                if len(values) != len(function.parameters):
+                    raise TypeError(
+                        f"{name}() missing {len(function.parameters) - len(values)} "
+                        "required positional argument."
+                    )
+
             else:
                 raise NameError(f"Undefined function '{name}'")
 
