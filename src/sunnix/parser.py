@@ -1,5 +1,5 @@
 from tokens import Token, TokenType
-from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment, UnaryExpression, BooleanLiteral, BlockStatement, IfStatement, VariableReference, WhileStatement, FunctionCall, ExpressionStatement, StringLiteral, Parameter, FunctionDeclaration, ReturnStatement
+from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment, UnaryExpression, BooleanLiteral, BlockStatement, IfStatement, VariableReference, WhileStatement, FunctionCall, ExpressionStatement, StringLiteral, Parameter, FunctionDeclaration, ReturnStatement, NullLiteral
 
 class ParserError(Exception):
     pass
@@ -100,7 +100,7 @@ class Parser:
             f"Expected a number literal, but found '{token.value}' "
             f"({token.type.name}) at line {token.line}, column {token.column}."
         )
-    
+
     def parse_unary(self):
         """recognises unary operators (-10, +10... etc)"""
         token = self.current_token()
@@ -141,11 +141,11 @@ class Parser:
 
     def parse_comparison(self):
         """for expressions such as:
-        
+
         int a = 10 + 5 > 12;
         """
         left = self.parse_expression()
-        
+
         token = self.current_token()
         while token.type in (
             TokenType.EQUAL_EQUAL,
@@ -170,13 +170,13 @@ class Parser:
         self.expect(TokenType.EQUAL) # =
         initializer = self.parse_or()
         self.expect(TokenType.SEMICOLON)
-        
+
         return VariableDeclaration(var_type, name, initializer)
 
     def parse_program(self):
         """iterates through the tokens until curr token == EOF,
         calling the appropriate methods for each instruction"""
-        
+
         statements: list[Statement] = []
 
         token = self.current_token()
@@ -197,14 +197,14 @@ class Parser:
         self.expect(TokenType.EQUAL)
         value = self.parse_or()
         self.expect(TokenType.SEMICOLON)
-        
+
         return Assignment(name, value)
 
     def parse_and(self):
         """recognizes expressions with the and (&&) operator"""
 
         left = self.parse_comparison()
-        
+
         token = self.current_token()
         while token.type == TokenType.AND:
             op = token
@@ -219,7 +219,7 @@ class Parser:
         """recognizes expressions with the or (||) operator"""
 
         left = self.parse_and()
-        
+
         token = self.current_token()
         while token.type == TokenType.OR:
             op = token
@@ -244,7 +244,7 @@ class Parser:
         self.expect(TokenType.RIGHT_BRACE)
 
         return BlockStatement(statements)
-    
+
     def parse_statement(self):
         """calls the appropriate method for each instruction"""
         token = self.current_token()
@@ -254,7 +254,7 @@ class Parser:
 
         elif token.type == TokenType.IDENTIFIER:
             peek = self.peek()
-        
+
             if peek is not None and peek.type == TokenType.LEFT_PAREN:
                 instruction = self.parse_function_call()
                 self.expect(TokenType.SEMICOLON)
@@ -295,7 +295,7 @@ class Parser:
         self.expect(TokenType.RIGHT_PAREN)
         block = self.parse_block()
         else_branch = None
-        
+
         if self.current_token().type == TokenType.ELSE:
             self.advance()
             if self.current_token().type == TokenType.IF:
@@ -356,7 +356,7 @@ class Parser:
 
     def parse_function_declaration(self):
         """recognizes functions declarations, such as:
-        
+
         func sum(int a, int b) {
             return a + b;
         }
@@ -368,7 +368,7 @@ class Parser:
 
         ## TODO: I can probably put this parameter analysis logic into
         ## a separate function and reuse it on parse_function_call()
-        # no parameter passed 
+        # no parameter passed
         if self.current_token().type != TokenType.RIGHT_PAREN:
             # one parameter passed
             parameters.append(self.parse_parameter())
@@ -383,7 +383,7 @@ class Parser:
         self.expect(TokenType.RIGHT_PAREN)
 
         body = self.parse_block()
-        
+
         return FunctionDeclaration(name, parameters, body)
 
     def parse_return_statement(self):
@@ -396,4 +396,4 @@ class Parser:
         value = self.parse_or()
         self.expect(TokenType.SEMICOLON)
 
-        return ReturnStatement(value) 
+        return ReturnStatement(value)
