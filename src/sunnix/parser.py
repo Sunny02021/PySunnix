@@ -378,3 +378,15 @@ class Parser:
         body = self.parse_block()
         
         return FunctionDeclaration(name, parameters, body)
+
+    def parse_return_statement(self):
+        """recognizes return statements, such as:
+        func sum(int a, int b) {
+            return a + b;
+        }
+        """
+        self.expect(TokenType.RETURN)
+        value = self.parse_or()
+        self.expect(TokenType.SEMICOLON)
+
+        return ReturnStatement(value) 
