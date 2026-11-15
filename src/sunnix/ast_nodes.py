@@ -83,3 +83,7 @@ class FunctionDeclaration(Statement):
 @dataclass
 class ExpressionStatement(Statement):
     expression: Expression
+
+@dataclass
+class ReturnStatement(Statement):
+    value: Expression
