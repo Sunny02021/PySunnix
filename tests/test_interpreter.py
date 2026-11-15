@@ -1,4 +1,3 @@
-
 import sys
 
 sys.path.insert(0, "src/sunnix")
@@ -8,28 +7,16 @@ from parser import Parser
 from interpreter import Interpreter
 
 code = """
-int x = 10;
-
-{
-    x = 20;
-    print(x);
+func greet() {
+    print("Hello!");
 }
 
-print(x);
-"""
-# 20
-# 20
-
-code2 = """
-{
-    int y = 42;
+func sum(int a, int b) {
+    print(a + b);
 }
-
-print(y);
 """
-# NameError
 
-lexer = Lexer(code2)
+lexer = Lexer(code)
 tokens = lexer.tokenize()
 
 parser = Parser(tokens)
@@ -38,4 +25,4 @@ program = parser.parse_program()
 interpreter = Interpreter(program)
 interpreter.interpret()
 
-
+print(program)
