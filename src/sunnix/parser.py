@@ -343,3 +343,35 @@ class Parser:
         self.advance()
         name = self.expect(TokenType.IDENTIFIER)
         return Parameter(param_type, name)
+
+    def parse_function_declaration(self):
+        """recognizes functions declarations, such as:
+        
+        func sum(int a, int b) {
+            return a + b;
+        }
+        """
+        self.expect(TokenType.FUNC)
+        name = self.expect(TokenType.IDENTIFIER)
+        self.expect(TokenType.LEFT_PAREN)
+        parameters: list[Parameter] = []
+
+        ## TODO: I can probably put this parameter analysis logic into
+        ## a separate function and reuse it on parse_function_call()
+        # no parameter passed 
+        if self.current_token().type != TokenType.RIGHT_PAREN:
+            # one parameter passed
+            parameters.append(self.parse_parameter())
+
+        # 'n' parameters passed
+        token = self.current_token()
+        while token.type == TokenType.COMMA:
+            self.expect(TokenType.COMMA)
+            parameters.append(self.parse_parameter())
+            token = self.current_token()
+
+        self.expect(TokenType.RIGHT_PAREN)
+
+        body = self.parse_block()
+        
+        return FunctionDeclaration(name, parameters, body)
