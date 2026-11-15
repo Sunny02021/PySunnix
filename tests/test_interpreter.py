@@ -7,16 +7,13 @@ from parser import Parser
 from interpreter import Interpreter
 
 code = """
-func greet() {
-    print("Hello!");
+print(null == null);
+print(null != null);
+
+func test() {
 }
 
-func main() {
-    int result = greet();
-    print(result);
-}
-
-main();
+print(test() == null);
 """
 
 lexer = Lexer(code)
