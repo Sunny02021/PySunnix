@@ -1,5 +1,5 @@
 from tokens import Token, TokenType
-from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment, UnaryExpression, BooleanLiteral, BlockStatement, IfStatement, VariableReference, WhileStatement, FunctionCall, ExpressionStatement, StringLiteral, Parameter
+from ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment, UnaryExpression, BooleanLiteral, BlockStatement, IfStatement, VariableReference, WhileStatement, FunctionCall, ExpressionStatement, StringLiteral, Parameter, FunctionDeclaration
 
 class ParserError(Exception):
     pass
@@ -271,6 +271,9 @@ class Parser:
         elif token.type == TokenType.LEFT_BRACE:
             return self.parse_block()
 
+        elif token.type == TokenType.FUNC:
+            return self.parse_function_declaration()
+
         else:
             raise ParserError(
                 f"Unexpected token '{token.value}' of type {token.type.name} whilst attempting to read a statement."
@@ -337,7 +340,7 @@ class Parser:
 
     def parse_parameter(self):
         param_type = self.current_token()
-        if param_type not in (TokenType.INT, TokenType.FLOAT):
+        if param_type.type not in (TokenType.INT, TokenType.FLOAT):
             raise ParserError("Expected parameter type")
 
         self.advance()
