@@ -1,4 +1,4 @@
-from tokens import Token, TokenType
+from .tokens import Token, TokenType
 
 class LexerError(Exception):
     pass
