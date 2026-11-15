@@ -274,6 +274,9 @@ class Parser:
         elif token.type == TokenType.FUNC:
             return self.parse_function_declaration()
 
+        elif token.type == TokenType.RETURN:
+            return self.parse_return_statement()
+
         else:
             raise ParserError(
                 f"Unexpected token '{token.value}' of type {token.type.name} whilst attempting to read a statement."
