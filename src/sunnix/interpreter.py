@@ -1,4 +1,4 @@
-from ast_nodes import NumberLiteral, BooleanLiteral, BinaryExpression, VariableReference, VariableDeclaration, Assignment, BlockStatement, UnaryExpression, FunctionCall, StringLiteral, ExpressionStatement, IfStatement, WhileStatement, FunctionDeclaration, ReturnStatement
+from ast_nodes import NumberLiteral, BooleanLiteral, BinaryExpression, VariableReference, VariableDeclaration, Assignment, BlockStatement, UnaryExpression, FunctionCall, StringLiteral, ExpressionStatement, IfStatement, WhileStatement, FunctionDeclaration, ReturnStatement, NullLiteral
 from errors import ReturnException
 import operator
 
@@ -96,6 +96,9 @@ class Interpreter:
             return expression.value
         elif isinstance(expression, StringLiteral):
             return expression.value
+        elif isinstance(expression, NullLiteral):
+            return None
+
         elif isinstance(expression, VariableReference):
             for scope in reversed(self.scopes):
                 if expression.name.value in scope:
@@ -124,7 +127,11 @@ class Interpreter:
                 values.append(value)
 
             if name == "print":
-                print(*values) # i'll use python functions for now
+                # change every None to "null"
+                print_values = ["null" if value is None else value for value in values]
+
+                print(*print_values) # i'll use python functions for now
+
             elif name in self.functions:
                 function = self.functions[name]
 
