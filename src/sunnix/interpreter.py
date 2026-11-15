@@ -130,9 +130,18 @@ class Interpreter:
                     )
 
                 if len(values) > len(function.parameters):
-                    raise TypeError(
-                        f"{name}() has too many positional arguments."
-                    )
+                    raise TypeError(f"{name}() has too many positional arguments.")
+
+                self.enter_scope()
+                try:
+                    # associating args to parameters
+                    for parameter, value in zip(function.parameters, values):
+                        self.scopes[-1][parameter.name.value] = value
+
+                    # executing the function body
+                    self.execute_statement(function.body)
+                finally:
+                    self.exit_scope()
 
             else:
                 raise NameError(f"Undefined function '{name}'")
