@@ -10,6 +10,7 @@ class TokenType(Enum):
     # literais
     NUMBER = auto()
     STRING = auto()
+    NULL = auto()
 
     # identificsdores
     IDENTIFIER = auto()
