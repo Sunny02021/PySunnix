@@ -1,0 +1,15 @@
+func isEven(int n) {
+    return n % 2 == 0;
+}
+
+func main() {
+    int number = 13;
+
+    if (isEven(number)) {
+        print("Even");
+    } else {
+        print("Odd");
+    }
+}
+
+main();
