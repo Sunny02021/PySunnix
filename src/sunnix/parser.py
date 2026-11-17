@@ -420,7 +420,7 @@ class Parser:
 
         return BreakStatement()
 
-    def parse_break_statement(self):
+    def parse_continue_statement(self):
         """recognizes continue statements, such as:
         while (i < 20) {
             if (i == 5) {
