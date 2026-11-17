@@ -7,3 +7,7 @@ class ReturnException(Exception):
 @dataclass
 class BreakException(Exception):
     value: object
+
+@dataclass
+class ContinueException(Exception):
+    value: object
