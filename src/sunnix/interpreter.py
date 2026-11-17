@@ -84,6 +84,9 @@ class Interpreter:
             value = self.evaluate(statement.value)
             raise ReturnException(value)
 
+        elif isinstance(statement, BreakStatement):
+            raise BreakException()
+
     def evaluate(self, expression):
         """converts AST values into Python values
         
