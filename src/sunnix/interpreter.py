@@ -1,5 +1,5 @@
-from .ast_nodes import NumberLiteral, BooleanLiteral, BinaryExpression, VariableReference, VariableDeclaration, Assignment, BlockStatement, UnaryExpression, FunctionCall, StringLiteral, ExpressionStatement, IfStatement, WhileStatement, FunctionDeclaration, ReturnStatement, NullLiteral, BreakStatement 
-from .errors import ReturnException, BreakException
+from .ast_nodes import NumberLiteral, BooleanLiteral, BinaryExpression, VariableReference, VariableDeclaration, Assignment, BlockStatement, UnaryExpression, FunctionCall, StringLiteral, ExpressionStatement, IfStatement, WhileStatement, FunctionDeclaration, ReturnStatement, NullLiteral, BreakStatement, ContinueStatement, BreakStatement
+from .errors import ReturnException, BreakException, ContinueException
 import operator
 
 BINARY_OPS = {
@@ -80,6 +80,10 @@ class Interpreter:
                 try:
                     self.execute_statement(statement.body)
                     condition = self.evaluate(statement.condition)
+
+                except ContinueException:
+                    continue
+
                 except BreakException:
                     return
 
