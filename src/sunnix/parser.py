@@ -397,3 +397,21 @@ class Parser:
         self.expect(TokenType.SEMICOLON)
 
         return ReturnStatement(value)
+
+    def parse_break_statement(self):
+        """recognizes break statements, such as:
+        while (i < 20) {
+            if (i == 5) {
+                break
+            }
+            
+            print(i);
+            i += 1;
+        }
+        """
+        self.expect(TokenType.BREAK)
+        value = self.parse_or()
+        self.expect(TokenType.SEMICOLON)
+
+        return BreakStatement()
+        
