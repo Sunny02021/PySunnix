@@ -94,4 +94,4 @@ class ReturnStatement(Statement):
 
 @dataclass
 class BreakStatement(Statement):
-    value: Expression
+    pass
