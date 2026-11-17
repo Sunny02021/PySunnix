@@ -75,17 +75,13 @@ class Interpreter:
 
         elif isinstance(statement, WhileStatement):
             """for while statements"""
-            condition = self.evaluate(statement.condition)
-            while condition:
+            while self.evaluate(statement.condition):
                 try:
                     self.execute_statement(statement.body)
-                    condition = self.evaluate(statement.condition)
-
                 except ContinueException:
                     continue
-
                 except BreakException:
-                    return
+                    break
 
         elif isinstance(statement, ReturnStatement):
             value = self.evaluate(statement.value)
