@@ -90,6 +90,9 @@ class Interpreter:
         elif isinstance(statement, BreakStatement):
             raise BreakException(None)
 
+        elif isinstance(statement, ContinueStatement):
+            raise ContinueException(None) # is this None needed??
+
     def evaluate(self, expression):
         """converts AST values into Python values
         
