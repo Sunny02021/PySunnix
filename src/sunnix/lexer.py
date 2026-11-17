@@ -16,6 +16,7 @@ class Lexer:
         "false": TokenType.FALSE,
         "null": TokenType.NULL,
         "break": TokenType.BREAK,
+        "continue": TokenType.CONTINUE,
     }
 
     def __init__(self, source):
