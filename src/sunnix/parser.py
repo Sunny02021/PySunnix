@@ -1,5 +1,5 @@
 from .tokens import Token, TokenType
-from .ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment, UnaryExpression, BooleanLiteral, BlockStatement, IfStatement, VariableReference, WhileStatement, FunctionCall, ExpressionStatement, StringLiteral, Parameter, FunctionDeclaration, ReturnStatement, NullLiteral
+from .ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment, UnaryExpression, BooleanLiteral, BlockStatement, IfStatement, VariableReference, WhileStatement, FunctionCall, ExpressionStatement, StringLiteral, Parameter, FunctionDeclaration, ReturnStatement, NullLiteral, BreakStatement
 
 class ParserError(Exception):
     pass
@@ -281,6 +281,9 @@ class Parser:
         elif token.type == TokenType.RETURN:
             return self.parse_return_statement()
 
+        elif token.type == TokenType.BREAK:
+            return self.parse_break_statement()
+
         else:
             raise ParserError(
                 f"Unexpected token '{token.value}' of type {token.type.name} whilst attempting to read a statement."
@@ -410,7 +413,6 @@ class Parser:
         }
         """
         self.expect(TokenType.BREAK)
-        value = self.parse_or()
         self.expect(TokenType.SEMICOLON)
 
         return BreakStatement()
