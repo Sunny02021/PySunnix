@@ -416,4 +416,3 @@ class Parser:
         self.expect(TokenType.SEMICOLON)
 
         return BreakStatement()
-        
