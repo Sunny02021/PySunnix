@@ -95,3 +95,7 @@ class ReturnStatement(Statement):
 @dataclass
 class BreakStatement(Statement):
     pass
+
+@dataclass
+class ContinueStatement(Statement):
+    pass
