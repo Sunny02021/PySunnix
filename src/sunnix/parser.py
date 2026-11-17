@@ -284,6 +284,9 @@ class Parser:
         elif token.type == TokenType.BREAK:
             return self.parse_break_statement()
 
+        elif token.type == TokenType.CONTINUE:
+            return self.parse_continue_statement()
+            
         else:
             raise ParserError(
                 f"Unexpected token '{token.value}' of type {token.type.name} whilst attempting to read a statement."
