@@ -1,5 +1,5 @@
 from .tokens import Token, TokenType
-from .ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment, UnaryExpression, BooleanLiteral, BlockStatement, IfStatement, VariableReference, WhileStatement, FunctionCall, ExpressionStatement, StringLiteral, Parameter, FunctionDeclaration, ReturnStatement, NullLiteral, BreakStatement
+from .ast_nodes import NumberLiteral, BinaryExpression, VariableDeclaration, Program, Statement, Assignment, UnaryExpression, BooleanLiteral, BlockStatement, IfStatement, VariableReference, WhileStatement, FunctionCall, ExpressionStatement, StringLiteral, Parameter, FunctionDeclaration, ReturnStatement, NullLiteral, BreakStatement, ContinueStatement
 
 class ParserError(Exception):
     pass
@@ -405,7 +405,7 @@ class Parser:
         """recognizes break statements, such as:
         while (i < 20) {
             if (i == 5) {
-                break
+                break;
             }
             
             print(i);
@@ -416,3 +416,19 @@ class Parser:
         self.expect(TokenType.SEMICOLON)
 
         return BreakStatement()
+
+    def parse_break_statement(self):
+        """recognizes continue statements, such as:
+        while (i < 20) {
+            if (i == 5) {
+                continue;
+            }
+            
+            print(i);
+            i += 1;
+        }
+        """
+        self.expect(TokenType.CONTINUE)
+        self.expect(TokenType.SEMICOLON)
+
+        return ContinueStatement()
