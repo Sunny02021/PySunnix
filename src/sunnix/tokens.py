@@ -26,6 +26,7 @@ class TokenType(Enum):
     TRUE = auto()
     FALSE = auto()
     BREAK = auto()
+    CONTINUE = auto()
 
     # ops
     PLUS = auto() # +
